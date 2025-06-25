@@ -5,3 +5,5 @@ server:
   compression:
     enabled: true
 mock.employees.max: 50
+
+logging.level.web: TRACE

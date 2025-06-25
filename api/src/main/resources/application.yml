@@ -1,2 +1,12 @@
 spring.application.name: employee-api
 server.port: 8111
+logging.level.web: TRACE
+logging.level.com.reliaquest: DEBUG
+logging.level.com: DEBUG
+
+apiPrefix: "/external/api/v1/employee"
+
+server.api.base-url: "http://localhost:8112/api/v1/employee"
+
+retry.maxAttempts: 5
+retry.backoffDelay: 30000

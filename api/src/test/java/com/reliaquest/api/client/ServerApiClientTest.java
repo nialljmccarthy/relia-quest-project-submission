@@ -34,11 +34,10 @@ class ServerApiClientTest {
         ListEmployeeServerResponse mockResponse = new ListEmployeeServerResponse();
         when(restTemplate.getForEntity(any(), eq(ListEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(mockResponse, HttpStatus.OK));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         ListEmployeeServerResponse result = serverApiClient.getAllEmployeesFromServer();
 
         assertNotNull(result);
@@ -49,11 +48,10 @@ class ServerApiClientTest {
     void getAllEmployeesFromServer_handlesRestTemplateException() {
         when(restTemplate.getForEntity(anyString(), eq(ListEmployeeServerResponse.class)))
                 .thenThrow(new RuntimeException("RestTemplate error"));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         assertThrows(RuntimeException.class, () -> serverApiClient.getAllEmployeesFromServer());
     }
 
@@ -63,11 +61,10 @@ class ServerApiClientTest {
         SingleEmployeeServerResponse mockResponse = new SingleEmployeeServerResponse();
         when(restTemplate.getForEntity(contains(id), eq(SingleEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(mockResponse, HttpStatus.OK));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         SingleEmployeeServerResponse result = serverApiClient.getEmployeeById(id);
 
         assertNotNull(result);
@@ -79,11 +76,10 @@ class ServerApiClientTest {
         String id = "notfound";
         when(restTemplate.getForEntity(contains(id), eq(SingleEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         assertThrows(IllegalArgumentException.class, () -> serverApiClient.getEmployeeById(id));
     }
 
@@ -93,11 +89,10 @@ class ServerApiClientTest {
         SingleEmployeeServerResponse mockResponse = new SingleEmployeeServerResponse();
         when(restTemplate.postForEntity(anyString(), any(), eq(SingleEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(mockResponse, HttpStatus.OK));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         SingleEmployeeServerResponse result = serverApiClient.createEmployee(input);
 
         assertNotNull(result);
@@ -109,11 +104,10 @@ class ServerApiClientTest {
         EmployeeInput input = new EmployeeInput();
         when(restTemplate.postForEntity(anyString(), any(), eq(SingleEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         assertThrows(IllegalStateException.class, () -> serverApiClient.createEmployee(input));
     }
 
@@ -126,11 +120,10 @@ class ServerApiClientTest {
         when(employeeResponse.getData()).thenReturn(employee);
 
         DeleteEmployeeResponse deleteResponse = new DeleteEmployeeResponse("", true);
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         when(restTemplate.getForEntity(contains(id), eq(SingleEmployeeServerResponse.class)))
                 .thenReturn(new ResponseEntity<>(employeeResponse, HttpStatus.OK));
         when(restTemplate.exchange(anyString(), eq(HttpMethod.DELETE), any(), eq(DeleteEmployeeResponse.class)))
@@ -151,16 +144,13 @@ class ServerApiClientTest {
         String id = "notfound";
         SingleEmployeeServerResponse employeeResponse = mock(SingleEmployeeServerResponse.class);
         when(employeeResponse.getData()).thenReturn(null);
-        when(retryTemplate.execute(any()))
-                .thenAnswer(invocation -> {
-                    RetryCallback callback = invocation.getArgument(0);
-                    return callback.doWithRetry(null);
-                });
+        when(retryTemplate.execute(any())).thenAnswer(invocation -> {
+            RetryCallback callback = invocation.getArgument(0);
+            return callback.doWithRetry(null);
+        });
         ServerApiClient spyClient = spy(serverApiClient);
         doReturn(employeeResponse).when(spyClient).getEmployeeById(id);
 
         assertThrows(IllegalArgumentException.class, () -> spyClient.deleteEmployee(id));
     }
-
-
 }

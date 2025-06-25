@@ -15,5 +15,4 @@ public class DeleteEmployeeResponse {
         this.status = status;
         this.data = data;
     }
-
 }

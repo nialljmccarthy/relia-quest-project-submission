@@ -2,7 +2,6 @@ package com.reliaquest.api.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import java.lang.IllegalArgumentException;
 
 import com.reliaquest.api.client.ServerApiClient;
 import com.reliaquest.api.model.*;

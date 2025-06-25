@@ -2,18 +2,16 @@ package com.reliaquest.api.client;
 
 import com.reliaquest.api.exception.TooManyRequestsException;
 import com.reliaquest.api.model.*;
+import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
 
 @Slf4j
 @Service
@@ -53,8 +51,9 @@ public class ServerApiClient {
                     throw new IllegalStateException(
                             "Failed to fetch employees from server. Status code: " + response.getStatusCode());
                 }
-            } catch (HttpClientErrorException  ex) {
-                throw new TooManyRequestsException("Received too many requests from the server. Please try again later.");
+            } catch (HttpClientErrorException ex) {
+                throw new TooManyRequestsException(
+                        "Received too many requests from the server. Please try again later.");
             }
         });
     }
@@ -71,13 +70,14 @@ public class ServerApiClient {
                             "Failed to fetch employees from server. Status code: " + response.getStatusCode());
                 }
                 log.debug("Retrieved employee from server: {}", response.getBody());
-                if(response.getBody() != null) {
+                if (response.getBody() != null) {
                     return response.getBody();
                 } else {
                     throw new IllegalArgumentException("Employee with ID " + id + " does not exist.");
                 }
             } catch (HttpClientErrorException.TooManyRequests ex) {
-                throw new TooManyRequestsException("Received too many requests from the server. Please try again later.");
+                throw new TooManyRequestsException(
+                        "Received too many requests from the server. Please try again later.");
             }
         });
     }
@@ -92,12 +92,14 @@ public class ServerApiClient {
                 ResponseEntity<SingleEmployeeServerResponse> response =
                         restTemplate.postForEntity(serverBaseUrl, request, SingleEmployeeServerResponse.class);
                 if (response.getStatusCode() != HttpStatus.OK) {
-                    throw new IllegalStateException("Failed to create employee. Status code: " + response.getStatusCode());
+                    throw new IllegalStateException(
+                            "Failed to create employee. Status code: " + response.getStatusCode());
                 }
                 log.debug("Created employee on server: {}", response.getBody());
                 return response.getBody();
             } catch (HttpClientErrorException.TooManyRequests ex) {
-                throw new TooManyRequestsException("Received too many requests from the server. Please try again later.");
+                throw new TooManyRequestsException(
+                        "Received too many requests from the server. Please try again later.");
             }
         });
     }
@@ -127,7 +129,8 @@ public class ServerApiClient {
                 log.debug("Deleted employee from server: {}", name);
                 return response.getBody();
             } catch (HttpClientErrorException.TooManyRequests ex) {
-                throw new TooManyRequestsException("Received too many requests from the server. Please try again later.");
+                throw new TooManyRequestsException(
+                        "Received too many requests from the server. Please try again later.");
             }
         });
     }

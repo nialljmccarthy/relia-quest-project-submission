@@ -52,6 +52,8 @@ public interface IEmployeeController<Entity, Input> {
     ResponseEntity<Entity> createEmployee(@RequestBody Input employeeInput);
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete employee by ID", description = "Deletes an employee by their ID and returns the employee name")
+    @Operation(
+            summary = "Delete employee by ID",
+            description = "Deletes an employee by their ID and returns the employee name")
     ResponseEntity<String> deleteEmployeeById(@PathVariable String id);
 }
